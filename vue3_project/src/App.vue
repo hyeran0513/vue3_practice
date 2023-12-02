@@ -1,29 +1,38 @@
 <template>
-  <div>
-    <!--
-    아래 코드 대신 v-model를 사용하면 더 간단하게 구현 가능
-    <input type="text" :value="name" @input="updateName" />
-    -->
-     <input type="text" v-model="name" />
-    <button class="btn btn-primary" v-on:click="onSubmit">click</button>
+  <div class="container">
+    <h2>To-Do List</h2>
+    <!-- modifiers - e.preventDefault 대신 사용-->
+    <form @submit.prevent="onSubmit" class="d-flex">
+      <div class="flex-grow-1 mr-2">
+        <input 
+          class="form-control" 
+          type="text" 
+          v-model="todo" 
+          placeholder="Type new to-do"
+        />
+      </div>
+      <div>
+        <button type="submit" class="btn btn-primary" @click="onSubmit">Add</button>
+      </div>
+    </form>
+      {{ todos }}
   </div>
 </template>
 
 <script setup>
-import {ref} from 'vue';
+  import { ref, reactive } from 'vue';
 
-const name = ref('hrkim');
+  const todo = ref('');
+  const todos = reactive([]);
 
-const onSubmit = () => {
-  console.log(name.value);
-};
+  const onSubmit = () => {
+    /* 기본적인 refresh하는 속성을 예방
+    e.preventDefault();
+    */
 
-/* 양방향 바인딩 
-1. @input: input에 값이 들어갈 때 실행 
-2. click 버튼 누르면 name의 값을 e.target.value으로 변경
-
-const updateName = (e) => {
-  name.value = e.target.value;
-};
-*/
+    todos.push({
+      id: Date.now(),
+      subject: todo.value
+    });
+  }
 </script>
