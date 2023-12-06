@@ -1,17 +1,23 @@
 <template>
-  <div class="container">
+  <div>
+    <div class="container">
     <h2>To-Do List</h2>
-    <form @submit.prevent="onSubmit" class="d-flex">
-      <div class="flex-grow-1 mr-2">
-        <input 
-          class="form-control" 
-          type="text" 
-          v-model="todo" 
-          placeholder="Type new to-do"
-        />
+    <form @submit.prevent="onSubmit">
+      <div class="d-flex">
+        <div class="flex-grow-1 mr-2">
+          <input 
+            class="form-control" 
+            type="text" 
+            v-model="todo" 
+            placeholder="Type new to-do"
+          />
+        </div>
+        <div>
+          <button type="submit" class="btn btn-primary">Add</button>
+        </div>
       </div>
-      <div>
-        <button type="submit" class="btn btn-primary">Add</button>
+      <div v-show="hasError" style="color: red">
+        This field cannot be empty
       </div>
     </form>
 
@@ -21,11 +27,14 @@
         {{ todo.subject }}
       </div>
     </div>
+    </div>
   </div>
 </template>
 
 <script setup>
   import { ref, reactive } from 'vue';
+
+  const hasError = ref(false);
 
   const todo = ref('');
   const todos = reactive([
@@ -34,10 +43,15 @@
   ]);
 
   const onSubmit = () => {
-    console.log(todo.value);
-    todos.push({
-      id: Date.now(),
-      subject: todo.value
-    });
+    if (todo.value) { 
+      hasError.value = false;
+
+      todos.push({
+        id: Date.now(),
+        subject: todo.value
+      });
+    } else {
+      hasError.value = true;
+    }
   }
 </script>
