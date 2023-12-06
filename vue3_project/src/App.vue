@@ -26,7 +26,11 @@
       <div class="card-body p-2">
         <div class="form-check">
           <input type="checkbox" class="form-check-input" v-model="todo.completed" />
-          <label class="form-check-label">{{ todo.subject }}</label>
+          <!-- style 바인딩 
+          <label class="form-check-label" :style="todo.completed ? todoStyle : {}">{{ todo.subject }}</label>
+          -->
+          <!-- class 바인딩 -->
+          <label class="form-check-label" :class="{ todo: todo.completed }">{{ todo.subject }}</label>
         </div>
       </div>
     </div>
@@ -41,13 +45,18 @@
 
   const todo = ref('');
   const todos = reactive([]);
-
+  /*
+  const todoStyle = {
+    textDecoration: 'line-through',
+    color: 'gray'
+  };
+  */
   const onSubmit = () => {
     if (todo.value) {
       todos.push({
         id: Date.now(),
         subject: todo.value,
-        completed: true
+        completed: false
       });
       
       hasError.value = false;
@@ -57,3 +66,10 @@
     }
   }
 </script>
+
+<style scoped>
+  .todo {
+    color: gray;
+    text-decoration: line-through;
+  }
+</style>
