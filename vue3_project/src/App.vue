@@ -1,7 +1,6 @@
 <template>
   <div class="container">
     <h2>To-Do List</h2>
-    <!-- modifiers - e.preventDefault 대신 사용-->
     <form @submit.prevent="onSubmit" class="d-flex">
       <div class="flex-grow-1 mr-2">
         <input 
@@ -12,10 +11,16 @@
         />
       </div>
       <div>
-        <button type="submit" class="btn btn-primary" @click="onSubmit">Add</button>
+        <button type="submit" class="btn btn-primary">Add</button>
       </div>
     </form>
-      {{ todos }}
+
+    <!-- 반복문: v-for -->
+    <div class="card mt-2" v-for="(todo, i) in todos" :key="i">
+      <div class="card-body p-2">
+        {{ todo.subject }}
+      </div>
+    </div>
   </div>
 </template>
 
@@ -23,13 +28,13 @@
   import { ref, reactive } from 'vue';
 
   const todo = ref('');
-  const todos = reactive([]);
+  const todos = reactive([
+    { id: 1, subject: '휴대폰 사기' },
+    { id: 2, subject: '장보기' }
+  ]);
 
   const onSubmit = () => {
-    /* 기본적인 refresh하는 속성을 예방
-    e.preventDefault();
-    */
-
+    console.log(todo.value);
     todos.push({
       id: Date.now(),
       subject: todo.value
