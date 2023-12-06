@@ -16,15 +16,18 @@
           <button type="submit" class="btn btn-primary">Add</button>
         </div>
       </div>
+
       <div v-show="hasError" style="color: red">
         This field cannot be empty
       </div>
     </form>
 
-    <!-- 반복문: v-for -->
     <div class="card mt-2" v-for="(todo, i) in todos" :key="i">
       <div class="card-body p-2">
-        {{ todo.subject }}
+        <div class="form-check">
+          <input type="checkbox" class="form-check-input" v-model="todo.completed" />
+          <label class="form-check-label">{{ todo.subject }}</label>
+        </div>
       </div>
     </div>
     </div>
@@ -37,19 +40,18 @@
   const hasError = ref(false);
 
   const todo = ref('');
-  const todos = reactive([
-    { id: 1, subject: '휴대폰 사기' },
-    { id: 2, subject: '장보기' }
-  ]);
+  const todos = reactive([]);
 
   const onSubmit = () => {
-    if (todo.value) { 
-      hasError.value = false;
-
+    if (todo.value) {
       todos.push({
         id: Date.now(),
-        subject: todo.value
+        subject: todo.value,
+        completed: true
       });
+      
+      hasError.value = false;
+      todo.value = '';
     } else {
       hasError.value = true;
     }
