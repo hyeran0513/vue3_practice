@@ -22,15 +22,19 @@
       </div>
     </form>
 
-    <div class="card mt-2" v-for="(todo, i) in todos" :key="i">
-      <div class="card-body p-2">
-        <div class="form-check">
+    <div v-if="!todos.length">추가된 Todo가 없습니다.</div>
+
+    <div class="card mt-2" 
+      v-for="(todo, index) in todos" 
+      :key="index">
+      <div class="card-body p-2 d-flex align-items-center">
+        <div class="form-check flex-grow-1">
           <input type="checkbox" class="form-check-input" v-model="todo.completed" />
-          <!-- style 바인딩 
-          <label class="form-check-label" :style="todo.completed ? todoStyle : {}">{{ todo.subject }}</label>
-          -->
-          <!-- class 바인딩 -->
+
           <label class="form-check-label" :class="{ todo: todo.completed }">{{ todo.subject }}</label>
+        </div>
+        <div>
+          <button type="button" class="btn btn-danger btn-sm" @click="deleteTodo(index)">Delete</button>
         </div>
       </div>
     </div>
@@ -45,12 +49,7 @@
 
   const todo = ref('');
   const todos = reactive([]);
-  /*
-  const todoStyle = {
-    textDecoration: 'line-through',
-    color: 'gray'
-  };
-  */
+
   const onSubmit = () => {
     if (todo.value) {
       todos.push({
@@ -64,6 +63,10 @@
     } else {
       hasError.value = true;
     }
+  }
+
+  const deleteTodo = (index) => {
+    todos.splice(index, 1);
   }
 </script>
 
